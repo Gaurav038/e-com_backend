@@ -7,10 +7,10 @@ const sendToken = (user, statusCode, res) => {
       });
 
     const options = {
-        expires: new Date(
-            Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000
-        ),
+        secure: process.env.NODE_ENV === 'localhost' ? 'auto' : true,
         httpOnly: true,
+        maxAge: 7*24*60*60*1000,   //days*hoursPerDay*minutesPerHour*secondsPerMinute*1000
+        sameSite: process.env.NODE_ENV === 'localhost' ? 'lax' : 'none',
     };
 
     res.status(statusCode).cookie("token", token, options).json({
