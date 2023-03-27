@@ -1,7 +1,10 @@
 // Create token and saving in cookie
+const jwt = require("jsonwebtoken");
 
 const sendToken = (user, statusCode, res) => {
-    const token = user.getJWTToken();
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: "5d",
+      });
 
     const options = {
         expires: new Date(
