@@ -6,7 +6,7 @@ const sendToken = (user, statusCode, res) => {
         expiresIn: "5d",
       });
 
-      res.cookie('jwttoken', token,
+      res.cookie('token', token,
       {
           secure: process.env.NODE_ENV === 'localhost' ? 'auto' : true,
           httpOnly: true,
