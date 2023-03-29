@@ -53,7 +53,9 @@ exports.loginUser = catchAsyncError(async (req, res, next) => {
 exports.logout = catchAsyncError(async (req, res, next) => {
   res.cookie("token", null, {
     expires: new Date(Date.now()),
+    secure: process.env.NODE_ENV === 'localhost' ? 'auto' : true,
     httpOnly: true,
+    sameSite: process.env.NODE_ENV === 'localhost' ? 'lax' : 'none',
   });
   res.status(200).json({
     success: true,
@@ -73,7 +75,8 @@ exports.forgetPassword = catchAsyncError(async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
 
   // const resetPasswordUrl = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
-  const resetPasswordUrl = `${req.protocol}://${req.get("host")}/password/reset/${resetToken}`;
+  // const resetPasswordUrl = `${req.protocol}://${req.get("host")}/password/reset/${resetToken}`;
+  const resetPasswordUrl = `https://e-com-front-end.vercel.app/password/reset/${resetToken}`;
 
   const message = `password reset token is \n\n ${resetPasswordUrl}`;
 
