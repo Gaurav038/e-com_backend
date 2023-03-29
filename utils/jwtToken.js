@@ -6,12 +6,14 @@ const sendToken = (user, statusCode, res) => {
         expiresIn: "5d",
       });
 
-    const options = {
-        httpOnly: true,
-        maxAge: 7*24*60*60*1000,   //days*hoursPerDay*minutesPerHour*secondsPerMinute*1000
-    };
-
-    res.status(statusCode).cookie("token", token, options).json({
+      res.cookie('jwttoken', token,
+      {
+          secure: process.env.NODE_ENV === 'localhost' ? 'auto' : true,
+          httpOnly: true,
+          maxAge: 7*24*60*60*1000,   //days*hoursPerDay*minutesPerHour*secondsPerMinute*1000
+          sameSite: process.env.NODE_ENV === 'localhost' ? 'lax' : 'none',
+      
+      }).status(statusCode).json({
         success: true,
         user,
         token
